@@ -1,0 +1,1 @@
+output = mean_filter()
