@@ -1,0 +1,21 @@
+e.g.
+gerber folder name:
+aaabbbccc
+
+processed gerber image name:
+aaabbbccc_pad.png
+aaabbbccc_drill.png
+aaabbbccc_white.png
+
+pcb samples folder name:
+aaabbbccc
+
+pcb samples name:
+board 1:
+00001
+board 2:
+00002
+board 3:
+00003
+...
+(assume we will at most have 100000 pcb boards for the same type)

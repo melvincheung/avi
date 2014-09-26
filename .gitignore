@@ -1,3 +1,12 @@
 *.jpg
+*.png
+*.bmp
+*.svg
 *.asv
 *.tif
+*.mat
+*.zip
+#written by Josh
+pcb_subtract.m
+#not used yet
+libsvm-3.18/

@@ -1,0 +1,14 @@
+[gerber layers]
+in gerbv:
+convert layers (e.g pad, white ink, drill) to svg
+
+in Inkscape:
+convert .svg file to .png or .bmp
+
+in matlab:
+rotate the pcb board to correct orientation
+for pad layer, select the suitable color (a mixture of some colors) to represent pad
+
+current problem:
+- the sizes of gerber layers after conversion are different. how to deal with it?
+- any way to simplify these tedious procedures?

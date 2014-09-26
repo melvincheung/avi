@@ -1,0 +1,17 @@
+factors may be included:
+- position of it on board
+- color
+- material it lies on
+- size
+- shape
+- defect image or transformed defect image
+- model no. of board
+- major axis
+- minor axis
+- max color?
+- at the edge between different components?
+
+- label (manually classified defect types) (edit a table of typical errors for reference)
+
+format:
+array with column title specifying the factor name? (like dataframe in R)

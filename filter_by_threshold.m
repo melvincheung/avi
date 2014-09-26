@@ -1,4 +1,9 @@
 function output = filter_by_threshold(input, threshold)
+%{
+
+Input:
+Output:
+%}
 for row = 1:size(input, 1)
     for col = 1:size(input, 2)
         if sum(input(row, col)) <= threshold
