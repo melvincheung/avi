@@ -85,7 +85,9 @@ if exist('datasample', 'file') == 2 %check if 'datasample' function exist
 else
     %this part is for old version matlab which 'datasample' function
     %does not exist
-    subset = randperm(size(image, 1), sample_size);
+%     subset = randperm(size(image, 1), sample_size);
+    subset = randperm(size(image, 1));
+    subset = subset(1:sample_size);
     sample = image(subset);
 end
 figure(); hold on;
