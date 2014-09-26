@@ -88,7 +88,7 @@ else
 %     subset = randperm(size(image, 1), sample_size);
     subset = randperm(size(image, 1));
     subset = subset(1:sample_size);
-    sample = image(subset);
+    sample = image(subset,:);
 end
 figure(); hold on;
 scatter(sample(:,1), sample(:,2), '.');
