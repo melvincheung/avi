@@ -80,7 +80,14 @@ figure(); imshow(segmented_images{4}), title('objects in cluster 4');
 end
 
 function plot_color_dist(image, sample_size, seeds, cluster_center)
-sample = datasample(image, sample_size, 1);
+if exist('datasample', 'file') == 2 %check if 'datasample' function exist
+    sample = datasample(image, sample_size, 1);
+else
+    %this part is for old version matlab which 'datasample' function
+    %does not exist
+    subset = randperm(size(image, 1), sample_size);
+    sample = image(subset);
+end
 figure(); hold on;
 scatter(sample(:,1), sample(:,2), '.');
 %plot initial seeds
