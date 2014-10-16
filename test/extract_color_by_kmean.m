@@ -44,13 +44,13 @@ seeds = [pad ; white_ink; green_ink; back_ground];
 
 %Possible improvement: k-metroid clustering may improve computational time
 %comparing with K-mean clustering
+% [cluster_idx, cluster_center] = kmeans(ab,no_of_layers,'distance','sqEuclidean', ...
+%     'start', seeds);
+
 [cluster_idx, cluster_center] = kmeans(ab,no_of_layers,'distance','sqEuclidean', ...
-    'start', seeds);
+                                      'Replicates',3, 'start', 'cluster', 'EmptyAction', 'singleton');
 
 plot_color_dist(ab, 300, seeds, cluster_center);
-
-% [cluster_idx, cluster_center] = kmeans(ab,no_of_layers,'distance','sqEuclidean', ...
-%                                       'Replicates',3, 'start', 'cluster');
 % output = cluster_idx;
 
 pixel_labels = reshape(cluster_idx,nrows,ncols);
@@ -65,18 +65,22 @@ for k = 1:no_of_layers
     segmented_images{k} = color;
 end
 
-figure(); imshow(segmented_images{1}), title('objects in cluster 1');
-output = segmented_images{1};
+%show clustered layers
+for i = 1:no_of_layers
+    figure(); imshow(segmented_images{i}), title('objects in cluster '+int2str(i));
+end
+% figure(); imshow(segmented_images{1}), title('objects in cluster 1');
 % imwrite(segmented_images{1}, 'extracted1.png', 'png');
-figure(); imshow(segmented_images{2}), title('objects in cluster 2');
+% figure(); imshow(segmented_images{2}), title('objects in cluster 2');
 % output = segmented_images{2};
-figure(); imshow(segmented_images{3}), title('objects in cluster 3');
-
-figure(); imshow(segmented_images{4}), title('objects in cluster 4');
-
+% figure(); imshow(segmented_images{3}), title('objects in cluster 3');
+% 
+% figure(); imshow(segmented_images{4}), title('objects in cluster 4');
+% 
 % figure(); imshow(segmented_images{5}), title('objects in cluster 5');
-%
+% 
 % figure(); imshow(segmented_images{6}), title('objects in cluster 6');
+output = segmented_images{1};
 end
 
 function plot_color_dist(image, sample_size, seeds, cluster_center)

@@ -15,3 +15,6 @@ factors may be included:
 
 format:
 array with column title specifying the factor name? (like dataframe in R)
+
+aware curse of dimensionality:
+http://en.wikipedia.org/wiki/Curse_of_dimensionality#Distance_functions
