@@ -67,7 +67,7 @@ end
 
 %show clustered layers
 for i = 1:no_of_layers
-    figure(); imshow(segmented_images{i}), title('objects in cluster '+int2str(i));
+    figure(); imshow(segmented_images{i}), title( strcat('objects in cluster ', int2str(i)) );
 end
 % figure(); imshow(segmented_images{1}), title('objects in cluster 1');
 % imwrite(segmented_images{1}, 'extracted1.png', 'png');
