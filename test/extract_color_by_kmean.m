@@ -96,9 +96,11 @@ else
 end
 figure(); hold on;
 scatter(sample(:,1), sample(:,2), '.');
+legend('Data point');
 title('CIELAB transformed color distribution');
 xlabel('red <---> green');
 ylabel('blue <---> yellow');
+
 %plot initial seeds
 scatter(seeds(1,1), seeds(1,2), 'd', ...
     'MarkerEdgeColor', 'r', 'MarkerFaceColor', 'y');
