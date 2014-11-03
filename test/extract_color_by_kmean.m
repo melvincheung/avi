@@ -51,8 +51,8 @@ predeter_seeds = [pad ; white_ink; green_ink; back_ground];
 [cluster_idx, cluster_center] = kmeans(ab,no_of_layers,'distance','sqEuclidean', ...
                                       'Replicates',3, 'start', 'cluster', 'EmptyAction', 'singleton');
 
-% plot_color_dist(ab, 300, seeds, cluster_center);
-plot_color_dist(ab, 300, cluster_center);
+% plot_color_dist(ab, 300, seeds, cluster_center cluster_idx);
+plot_color_dist(ab, 300, cluster_center, cluster_idx);
 % output = cluster_idx;
 
 pixel_labels = reshape(cluster_idx,nrows,ncols);
@@ -85,34 +85,38 @@ end
 output = segmented_images{1};
 end
 
-function plot_color_dist(image, sample_size, cluster_center)
+function plot_color_dist(image, sample_size, cluster_center, cluster_idx)
 % function plot_color_dist(image, sample_size, cluster_seeds, cluster_center)
 % To do: add back optional initial seed position arguement
+image_w_idx = horzcat(image, cluster_idx); %for later data sample coloring use
 if exist('datasample', 'file') == 2 %check if 'datasample' function exist
-    sample = datasample(image, sample_size, 1);
+    sample = datasample(image_w_idx, sample_size, 1);
 else
     %this part is for old version matlab which 'datasample' function
     %does not exist
-%     subset = randperm(size(image, 1), sample_size);
-    subset = randperm(size(image, 1));
+    subset = randperm(size(image_w_idx, 1));
     subset = subset(1:sample_size);
-    sample = image(subset,:);
+    sample = image_w_idx(subset,:);
 end
 figure(); hold on;
 title('CIELAB transformed color distribution');
 xlabel('red <---> green');
 ylabel('blue <---> yellow');
-scatter(sample(:,1), sample(:,2), '.');
+cluster_color = rand([size(cluster_center,1), 3]);%generate a set of 
+    % random colors for initial and final position of cluster centers
+for i = 1: max(sample(:, 3));
+    cluster_data = sample(sample(:, 3) ==i, 1:2);
+    scatter(cluster_data(:,1), cluster_data(:,2), [], cluster_color(i, :), '.');
+%     scatter(sample(:,1), sample(:,2), '.');
+end
 legend('Data point', 'Location', 'best');
 
-center_color = rand([size(cluster_center,1), 3]);%generate a set of 
-    % random colors for initial and final position of cluster centers
-marker_area = 64;
+marker_area = 64; %marker size
 %plot initial cluster_seeds
 % scatter(cluster_seeds(:,1), cluster_seeds(:,2), marker_area, ...
 %         center_color, 'd', 'filled');
 %plot final cluster centers
 scatter(cluster_center(:,1), cluster_center(:,2), marker_area, ...
-        center_color, 'o', 'filled');
+        cluster_color, 'o', 'filled');
 hold off;
 end
