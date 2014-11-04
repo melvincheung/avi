@@ -17,28 +17,28 @@ if use_lab_transform
     cform = makecform('srgb2lab');
     lab_image = applycform(image,cform);
     % rename ab to color channel
-    ab = double(lab_image(:,:,2:3));
-    nrows = size(ab,1);
-    ncols = size(ab,2);
-    ab = reshape(ab,nrows*ncols,2);
+    color_channel = double(lab_image(:,:,2:3));
+    nrows = size(color_channel,1);
+    ncols = size(color_channel,2);
+    color_channel = reshape(color_channel,nrows*ncols,2);
     
 else
-    ab = double(image);
-    nrows = size(ab,1);
-    ncols = size(ab,2);
-    ab = reshape(ab,nrows*ncols,3);
+    color_channel = double(image);
+    nrows = size(color_channel,1);
+    ncols = size(color_channel,2);
+    color_channel = reshape(color_channel,nrows*ncols,3);
 end
 
 % K-means Clustering
 % [cluster_idx, cluster_center] = kmeans_clustering(ab, no_of_layers, use_lab_transform);
 % Hierarchical Clustering
-cluster_idx = hierarchical_clustering(ab, 4);
+cluster_idx = hierarchical_clustering(color_channel, 4);
 % DBSCAN
 
 
 % plot_color_dist(ab, 300, seeds, cluster_center cluster_idx);
 % To do: amend the plot for clustering without seeds
-plot_color_dist(ab, 300, cluster_center, cluster_idx);
+plot_color_dist(color_channel, 300, cluster_center, cluster_idx);
 % output = cluster_idx;
 
 pixel_labels = reshape(cluster_idx,nrows,ncols);
