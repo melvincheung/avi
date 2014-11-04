@@ -16,7 +16,7 @@ use_lab_transform = true;
 if use_lab_transform
     cform = makecform('srgb2lab');
     lab_image = applycform(image,cform);
-    
+    % rename ab to color channel
     ab = double(lab_image(:,:,2:3));
     nrows = size(ab,1);
     ncols = size(ab,2);
@@ -29,9 +29,15 @@ else
     ab = reshape(ab,nrows*ncols,3);
 end
 
-[cluster_idx, cluster_center] = kmeans_clustering(ab, no_of_layers, use_lab_transform);
+% K-means Clustering
+% [cluster_idx, cluster_center] = kmeans_clustering(ab, no_of_layers, use_lab_transform);
+% Hierarchical Clustering
+cluster_idx = hierarchical_clustering(ab, 4);
+% DBSCAN
+
 
 % plot_color_dist(ab, 300, seeds, cluster_center cluster_idx);
+% To do: amend the plot for clustering without seeds
 plot_color_dist(ab, 300, cluster_center, cluster_idx);
 % output = cluster_idx;
 
@@ -66,7 +72,6 @@ output = segmented_images{1};
 end
 
 function [cluster_idx, cluster_center] = kmeans_clustering(ab, no_of_layers, use_lab_transform)
-% no_of_layers = 4;
 % repeat timage clustering 3 times to avoid local minima
 
 % cluster by predetermined seeds (this part should be amended to non-hard code version)
