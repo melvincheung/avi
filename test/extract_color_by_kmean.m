@@ -29,16 +29,20 @@ else
     color_channel = reshape(color_channel,nrows*ncols,3);
 end
 
-% K-means Clustering
+%% K-means Clustering
 % [cluster_idx, cluster_center] = kmeans_clustering(ab, no_of_layers, use_lab_transform);
-% Hierarchical Clustering
-cluster_idx = hierarchical_clustering(color_channel, 4);
-% DBSCAN
+%% Hierarchical Clustering
+% cluster_idx = hierarchical_clustering(color_channel, 4);
+% cluster_center = [];
+% with_seeds = false;
+%% DBSCAN
+% [cluster_idx, type] = dbscan(color_channel, 2, []);
+% cluster_idx = cluster_idx';
+% cluster_center = [];
+% with_seeds = false;
 
-
-% plot_color_dist(ab, 300, seeds, cluster_center cluster_idx);
 % To do: amend the plot for clustering without seeds
-plot_color_dist(color_channel, 300, cluster_center, cluster_idx);
+plot_color_dist(color_channel, 300, with_seeds, cluster_center, cluster_idx);
 % output = cluster_idx;
 
 pixel_labels = reshape(cluster_idx,nrows,ncols);
@@ -95,7 +99,7 @@ predeter_seeds = [pad ; white_ink; green_ink; back_ground];
     'Replicates',3, 'start', 'cluster', 'EmptyAction', 'singleton');
 end
 
-function plot_color_dist(image, sample_size, cluster_center, cluster_idx)
+function plot_color_dist(image, sample_size, with_seeds, cluster_center, cluster_idx)
 % function plot_color_dist(image, sample_size, cluster_seeds, cluster_center)
 % To do: add back optional initial seed position arguement
 image_w_idx = horzcat(image, cluster_idx); %for later data sample coloring use
@@ -112,9 +116,11 @@ figure(); hold on;
 title('CIELAB transformed color distribution');
 xlabel('red <---> green');
 ylabel('blue <---> yellow');
-cluster_color = rand([size(cluster_center,1), 3]);%generate a set of
+%generate a set of
 % random colors for initial and final position of cluster centers
-for i = 1: max(sample(:, 3));
+cluster_color = rand([max(cluster_idx), 3]);
+% cluster_color = rand([size(cluster_center,1), 3]);
+for i = 1: max(sample(:, 3))
     cluster_data = sample(sample(:, 3) ==i, 1:2);
     scatter(cluster_data(:,1), cluster_data(:,2), [], cluster_color(i, :), '.');
     %     scatter(sample(:,1), sample(:,2), '.');
@@ -122,11 +128,13 @@ end
 legend('Data point', 'Location', 'best');
 
 marker_area = 64; %marker size
-%plot initial cluster_seeds
-% scatter(cluster_seeds(:,1), cluster_seeds(:,2), marker_area, ...
-%         center_color, 'd', 'filled');
-%plot final cluster centers
-scatter(cluster_center(:,1), cluster_center(:,2), marker_area, ...
-    cluster_color, 'o', 'filled');
+if with_seeds
+    %plot initial cluster_seeds
+    % scatter(cluster_seeds(:,1), cluster_seeds(:,2), marker_area, ...
+    %         center_color, 'd', 'filled');
+    %plot final cluster centers
+    scatter(cluster_center(:,1), cluster_center(:,2), marker_area, ...
+        cluster_color, 'o', 'filled');
+end
 hold off;
 end
