@@ -30,19 +30,18 @@ else
 end
 
 %% K-means Clustering
-% [cluster_idx, cluster_center] = kmeans_clustering(ab, no_of_layers, use_lab_transform);
+% [cluster_idx, cluster_center] = kmeans_clustering(color_channel, no_of_layers, use_lab_transform);
 %% Hierarchical Clustering
 % cluster_idx = hierarchical_clustering(color_channel, 4);
 % cluster_center = [];
 % with_seeds = false;
 %% DBSCAN
-% [cluster_idx, type] = dbscan(color_channel, 2, []);
-% cluster_idx = cluster_idx';
+[cluster_idx, type] = dbscan(color_channel, 2, []);
 % cluster_center = [];
 % with_seeds = false;
 
 % To do: amend the plot for clustering without seeds
-plot_color_dist(color_channel, 300, with_seeds, cluster_center, cluster_idx);
+plot_color_dist(color_channel, 300, cluster_idx);
 % output = cluster_idx;
 
 pixel_labels = reshape(cluster_idx,nrows,ncols);
@@ -99,8 +98,12 @@ predeter_seeds = [pad ; white_ink; green_ink; back_ground];
     'Replicates',3, 'start', 'cluster', 'EmptyAction', 'singleton');
 end
 
-function plot_color_dist(image, sample_size, with_seeds, cluster_center, cluster_idx)
-% function plot_color_dist(image, sample_size, cluster_seeds, cluster_center)
+function plot_color_dist(image, sample_size, cluster_idx, varargin)
+cluster_center = [];
+if ~isempty(varargin)
+    cluster_center = varargin{1};
+end
+
 % To do: add back optional initial seed position arguement
 image_w_idx = horzcat(image, cluster_idx); %for later data sample coloring use
 if exist('datasample', 'file') == 2 %check if 'datasample' function exist
@@ -128,7 +131,7 @@ end
 legend('Data point', 'Location', 'best');
 
 marker_area = 64; %marker size
-if with_seeds
+if ~isempty(cluster_center)
     %plot initial cluster_seeds
     % scatter(cluster_seeds(:,1), cluster_seeds(:,2), marker_area, ...
     %         center_color, 'd', 'filled');
