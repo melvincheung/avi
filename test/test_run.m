@@ -5,8 +5,8 @@ clear all;
 
 % image = imread('001.bmp');
 image = imread('D:\pcb samples\08092014 pcb board scanning\blue file.bmp');
-image = imresize(image, 0.01);
-segmented_images1 = extract_color_by_kmean(image, 4);
+image = imresize(image, 0.1);
+segmented_images1 = extract_layers(image, 4);
 
 % profile off;
 % profile viewer;

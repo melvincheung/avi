@@ -1,4 +1,4 @@
-function [output] = extract_color_by_kmean(image, no_of_layers)
+function [output] = extract_layers(image, no_of_layers)
 % This function use k-mean clustering to cluster different layers (pad, white ink, green ink...)
 imshow(image), title('original image');
 text(size(image,2),size(image,1)+15,...
@@ -30,13 +30,13 @@ else
 end
 
 %% K-means Clustering
-% [cluster_idx, cluster_center] = kmeans_clustering(color_channel, no_of_layers, use_lab_transform);
+[cluster_idx, cluster_center] = kmeans_clustering(color_channel, no_of_layers, use_lab_transform);
 %% Hierarchical Clustering
 % cluster_idx = hierarchical_clustering(color_channel, 4);
 % cluster_center = [];
 % with_seeds = false;
 %% DBSCAN
-[cluster_idx, type] = dbscan(color_channel, 2, []);
+% [cluster_idx, type] = dbscan(color_channel, 2, []);
 % cluster_center = [];
 % with_seeds = false;
 
